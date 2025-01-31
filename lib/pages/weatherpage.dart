@@ -108,55 +108,13 @@ class _weatherPageState extends State<weatherPage> {
     height=size.height;
     width=size.width;
     return Scaffold(
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Container(
-              width: width/1.4,
-              child: TextFormField(
-                style: TextStyle(
-                  color: Colors.white
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    searchcity(value);
-
-                  });
-                },
-                decoration: InputDecoration(
-                  suffixStyle: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  floatingLabelStyle: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  hintText: "Enter City Name",
-                  hintStyle: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,                  ),
-                  prefixIcon: Icon(Icons.location_city,
-                    color: Theme.of(context).colorScheme.primary,                  ), // Optional: Add an icon
-                  contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30), // Rounded corners
-                    borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1.5),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1.5),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
-                  ),
-                ),
-              ),),
-          FloatingActionButton(
-            shape: const CircleBorder(eccentricity: CircularProgressIndicator.strokeAlignCenter),
-            onPressed: _fetchWeather,
-            child: const Icon(Icons.location_on_outlined),
-          ),
-        ],
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   shape: const CircleBorder(eccentricity: CircularProgressIndicator.strokeAlignCenter),
+      //   onPressed: _fetchWeather,
+      //   child: const Icon(Icons.location_on_outlined,
+      //   size: 35,
+      //   ),
+      // ),
 
       body: Center(
         child: SingleChildScrollView(
@@ -164,7 +122,7 @@ class _weatherPageState extends State<weatherPage> {
           child: Column(
             children: [
                 SizedBox(
-                  height: 100,
+                  height: 25,
                 ),
               Text(_weather?.name ?? "",
                 style:  TextStyle(
@@ -329,8 +287,64 @@ class _weatherPageState extends State<weatherPage> {
                 ],
               ),
               SizedBox(
-                height:200,
-              )
+                height: 25,
+              ),
+              Row(
+                children: [
+                  Container(
+                    width: width/1.5,
+                    child: TextFormField(
+                      style: TextStyle(
+                          color: Colors.white
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          searchcity(value);
+
+                        });
+                      },
+                      decoration: InputDecoration(
+                        suffixStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        floatingLabelStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        hintText: "Enter City Name",
+                        hintStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,                  ),
+                        prefixIcon: Icon(Icons.location_city,
+                          color: Theme.of(context).colorScheme.primary,                  ), // Optional: Add an icon
+                        contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30), // Rounded corners
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1.5),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1.5),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 25,
+                  ),
+                  FloatingActionButton(
+                      shape: const CircleBorder(eccentricity: CircularProgressIndicator.strokeAlignCenter),
+                      onPressed: _fetchWeather,
+                      child: const Icon(Icons.location_on_outlined,
+                      size: 35,
+                      ),
+                    ),
+
+                ],
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              ),
             ],
           ),
         ),
