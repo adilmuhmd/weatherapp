@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:weatherapp/models/weather.dart';
 import 'package:weatherapp/service/weatherservice.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:simple_circular_progress_bar/simple_circular_progress_bar.dart';
 
 
 class weatherPage extends StatefulWidget {
@@ -105,92 +106,80 @@ class _weatherPageState extends State<weatherPage> {
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
-    height=size.height;
-    width=size.width;
-    return Scaffold(
-      // floatingActionButton: FloatingActionButton(
-      //   shape: const CircleBorder(eccentricity: CircularProgressIndicator.strokeAlignCenter),
-      //   onPressed: _fetchWeather,
-      //   child: const Icon(Icons.location_on_outlined,
-      //   size: 35,
-      //   ),
-      // ),
+    height = size.height;
+    width = size.width;
 
+    return Scaffold(
       body: Center(
-        child: SingleChildScrollView(
-          
+        child: _weather == null
+            ? CircularProgressIndicator()
+            : SingleChildScrollView(
           child: Column(
             children: [
-                SizedBox(
-                  height: 25,
-                ),
-              Text(_weather?.name ?? "",
-                style:  TextStyle(
-                    fontSize: 40,
-                    fontFamily: "Gotham",
-                    fontWeight: FontWeight.bold,
-
-
+              SizedBox(height: 25),
+              Text(
+                _weather?.name ?? "",
+                style: TextStyle(
+                  fontSize: 40,
+                  fontFamily: "Gotham",
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(_weather?.main ?? "",
-                style:  TextStyle(
-                    fontSize: 25,
-                    fontFamily: "Gotham",
-                    fontWeight: FontWeight.bold,
+              Text(
+                _weather?.main ?? "",
+                style: TextStyle(
+                  fontSize: 25,
+                  fontFamily: "Gotham",
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-          
               Container(
-                height:height/6,
+                height: height / 6,
                 width: MediaQuery.sizeOf(context).width,
                 decoration: BoxDecoration(
-                    image:DecorationImage(
-                      fit: BoxFit.contain,
-                      image: AssetImage(weatherimage(_weather?.icon)),
-                    )
+                  image: DecorationImage(
+                    fit: BoxFit.contain,
+                    image: AssetImage(weatherimage(_weather?.icon)),
+                  ),
                 ),
               ),
-              Text("${_weather?.temp.round()} °C" ,
+              Text(
+                "${_weather?.temp != null ? _weather!.temp.round().toString() + '\u00B0C' : ''}",
                 style: const TextStyle(
                   fontSize: 90,
                   fontFamily: "Gotham",
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text("Feels Like ${_weather?.feels_like.round()} °C",
-                style:  TextStyle(
-                    fontSize: 35,
-                    fontFamily: "Gotham",
+              Text(
+                "${_weather?.feels_like != null ? 'Feels Like ' + _weather!.feels_like.round().toString() + '\u00B0C' : ''}",
+                style: TextStyle(
+                  fontSize: 35,
+                  fontFamily: "Gotham",
                 ),
               ),
-              SizedBox(
-                height: 20,
-              ),
+              SizedBox(height: 20),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center
-                ,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Min ${_weather?.temp_min.round()} °C",
-                    style:  TextStyle(
-                        fontSize: 15,
-                        fontFamily: "Gotham",
+                  Text(
+                    "${_weather?.temp_min != null ? 'Min ' + _weather!.temp_min.round().toString() + '\u00B0C' : ''}",
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontFamily: "Gotham",
                     ),
                   ),
-                  SizedBox(
-                    width:20,
-                  ),
-                  Text("Max ${_weather?.temp_max.round()} °C",
-                    style:  TextStyle(
-                        fontSize: 15,
-                        fontFamily: "Gotham",
+                  SizedBox(width: 20),
+                  Text(
+                    "${_weather?.temp_max != null ? 'Max ' + _weather!.temp_max.round().toString() + '\u00B0C' : ''}",
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontFamily: "Gotham",
                     ),
-                  )
+                  ),
                 ],
               ),
-              SizedBox(
-                height: 40,
-              ),
+              SizedBox(height: 40),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -199,44 +188,41 @@ class _weatherPageState extends State<weatherPage> {
                     height: 180,
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.primary,
-                      borderRadius: BorderRadius.circular(10000),
+                      borderRadius: BorderRadius.circular(100),
                     ),
                     child: Stack(
                       clipBehavior: Clip.none,
                       children: [
                         Positioned(
-                          top: height/30,
-                            left: width/5.9,
-                            child: Text("Wind",
-                          style:  TextStyle(
-                            color: Theme.of(context).colorScheme.onPrimary,
+                          top: height / 30,
+                          left: width / 20.9,
+                          child: SvgPicture.asset("icons/windicon.svg",
+                              color: Theme.of(context).colorScheme.onPrimary, height: 25),
+                        ),
+                        Positioned(
+                          top: height / 30,
+                          left: width / 5.9,
+                          child: Text(
+                            "Wind",
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary,
                               fontSize: 15,
                               fontFamily: "Gotham",
-
-                          ),
-                        ),
-                        ),
-                        Positioned(
-                          top: height/30,
-                          left: width/20.9,
-                          child:SvgPicture.asset("icons/windicon.svg",
-                            color: Theme.of(context).colorScheme.onPrimary,
-                          height: 25,
-                          )
-                        ),
-                        Positioned(
-                          top: height/10,
-                          left: width/12.9,
-                          child: Text("${_weather?.speed.toString()} MPH",
-                            style:  TextStyle(
-                              color: Theme.of(context).colorScheme.onPrimary,
-                                fontSize: 25,
-                                fontFamily: "Gotham",
-
                             ),
                           ),
                         ),
-
+                        Positioned(
+                          top: height / 10,
+                          left: width / 13.9,
+                          child: Text(
+                            "${_weather?.speed.toString()} MPH",
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                              fontSize: 25,
+                              fontFamily: "Gotham",
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -251,33 +237,32 @@ class _weatherPageState extends State<weatherPage> {
                       clipBehavior: Clip.none,
                       children: [
                         Positioned(
-                            top: height/30,
-                            left: width/20.9,
-                            child:SvgPicture.asset("icons/humidity.svg",
-                              color: Theme.of(context).colorScheme.onPrimary,
-                              height: 25,
-                            )
+                          top: height / 30,
+                          left: width / 20.9,
+                          child: SvgPicture.asset("icons/humidity.svg",
+                              color: Theme.of(context).colorScheme.onPrimary, height: 25),
                         ),
                         Positioned(
-                            top: height/30,
-                            left: width/6.9,
-                            child: Text("Humidity",
-                              style:  TextStyle(
-                                color: Theme.of(context).colorScheme.onPrimary,
-                                  fontSize: 15,
-                                  fontFamily: "Gotham",
-                              ),
-                            )
+                          top: height / 30,
+                          left: width / 6.9,
+                          child: Text(
+                            "Humidity",
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                              fontSize: 15,
+                              fontFamily: "Gotham",
+                            ),
+                          ),
                         ),
                         Positioned(
-                          top: height/10,
-                          left: width/8.9,
-                          child: Text("${_weather?.humidity.round()} %",
-                            style:  TextStyle(
+                          top: height / 10,
+                          left: width / 8.9,
+                          child: Text(
+                            "${_weather?.humidity.round()} %",
+                            style: TextStyle(
                               color: Theme.of(context).colorScheme.onPrimary,
-                                fontSize: 35,
-                                fontFamily: "Gotham",
-
+                              fontSize: 35,
+                              fontFamily: "Gotham",
                             ),
                           ),
                         ),
@@ -286,38 +271,25 @@ class _weatherPageState extends State<weatherPage> {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 25,
-              ),
+              SizedBox(height: 25),
               Row(
                 children: [
-                  Container(
-                    width: width/1.5,
+                  SizedBox(
+                    width: width / 1.5,
                     child: TextFormField(
-                      style: TextStyle(
-                          color: Colors.white
-                      ),
+                      style: TextStyle(color: Colors.white),
                       onChanged: (value) {
                         setState(() {
                           searchcity(value);
-
                         });
                       },
                       decoration: InputDecoration(
-                        suffixStyle: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        floatingLabelStyle: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
                         hintText: "Enter City Name",
-                        hintStyle: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,                  ),
-                        prefixIcon: Icon(Icons.location_city,
-                          color: Theme.of(context).colorScheme.primary,                  ), // Optional: Add an icon
+                        hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
+                        prefixIcon: Icon(Icons.location_city, color: Theme.of(context).colorScheme.primary),
                         contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30), // Rounded corners
+                          borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1.5),
                         ),
                         enabledBorder: OutlineInputBorder(
@@ -331,17 +303,12 @@ class _weatherPageState extends State<weatherPage> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: 25,
-                  ),
+                  SizedBox(width: 25),
                   FloatingActionButton(
-                      shape: const CircleBorder(eccentricity: CircularProgressIndicator.strokeAlignCenter),
-                      onPressed: _fetchWeather,
-                      child: const Icon(Icons.location_on_outlined,
-                      size: 35,
-                      ),
-                    ),
-
+                    shape: const CircleBorder(),
+                    onPressed: _fetchWeather,
+                    child: const Icon(Icons.location_on_outlined, size: 35),
+                  ),
                 ],
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               ),
